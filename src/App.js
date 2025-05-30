@@ -103,29 +103,20 @@ export default function App() {
     ).then(() => setToast("Your message has been recorded!"));
   };
 
+  const inputClass = `w-full p-2 border rounded ${darkMode ? "bg-transparent text-white" : "bg-white text-black"}`;
+
   return (
-    <div
-      className={`${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-900"} min-h-screen p-6 font-sans transition-colors duration-300 relative`}
-    >
+    <div className={`${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-900"} min-h-screen p-6 font-sans transition-colors duration-300 relative`}>
       {toast && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-50">
           {toast}
         </div>
       )}
 
-      <div
-        className={`max-w-xl mx-auto rounded-xl shadow-md p-6 transition-colors duration-300 ${
-          darkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900"
-        }`}
-      >
+      <div className={`max-w-xl mx-auto rounded-xl shadow-md p-6 transition-colors duration-300 ${darkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900"}`}>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">Leverage Calculator</h2>
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className={`text-sm px-3 py-1 border rounded transition-colors ${
-              darkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
-            }`}
-          >
+          <button onClick={() => setDarkMode(!darkMode)} className={`text-sm px-3 py-1 border rounded transition-colors ${darkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"}`}>
             {darkMode ? "☀️" : "🌙"}
           </button>
         </div>
@@ -133,7 +124,7 @@ export default function App() {
         <div className="space-y-4">
           <label className="block">
             <span className="block text-sm font-medium">Direction</span>
-            <select className="w-full mt-1 p-2 border rounded bg-transparent" value={direction} onChange={(e) => setDirection(e.target.value)}>
+            <select className={inputClass} value={direction} onChange={(e) => setDirection(e.target.value)}>
               <option value="long">Long</option>
               <option value="short">Short</option>
             </select>
@@ -141,22 +132,22 @@ export default function App() {
 
           <label className="block">
             <span className="block text-sm font-medium">Entry Price (USDT)</span>
-            <input className="w-full mt-1 p-2 border rounded bg-transparent" type="number" value={entryPrice} onChange={(e) => setEntryPrice(Number(e.target.value))} />
+            <input className={inputClass} type="number" value={entryPrice} onChange={(e) => setEntryPrice(Number(e.target.value))} />
           </label>
 
           <label className="block">
             <span className="block text-sm font-medium">Stop Loss %</span>
-            <input className="w-full mt-1 p-2 border rounded bg-transparent" type="number" value={slPercent} onChange={(e) => setSlPercent(Number(e.target.value))} />
+            <input className={inputClass} type="number" value={slPercent} onChange={(e) => setSlPercent(Number(e.target.value))} />
           </label>
 
           <label className="block">
             <span className="block text-sm font-medium">SL Amount (₹)</span>
-            <input className="w-full mt-1 p-2 border rounded bg-transparent" type="number" value={slAmount} onChange={(e) => setSlAmount(Number(e.target.value))} />
+            <input className={inputClass} type="number" value={slAmount} onChange={(e) => setSlAmount(Number(e.target.value))} />
           </label>
 
           <label className="block">
             <span className="block text-sm font-medium">Leverage</span>
-            <select className="w-full mt-1 p-2 border rounded bg-transparent" value={leverage} onChange={(e) => setLeverage(Number(e.translation.value))}>
+            <select className={inputClass} value={leverage} onChange={(e) => setLeverage(Number(e.target.value))}>
               {[...Array(21)].map((_, i) => i * 50).filter((v) => v > 0).map((val) => (
                 <option key={val} value={val}>{val}x</option>
               ))}
@@ -192,24 +183,26 @@ export default function App() {
         )}
 
         <footer className="text-xs text-center text-gray-400 mt-10">
-          Built with 🤍 by <a href="https://www.instagram.com/_imsultan?igsh=Y2hnYzJ5N2VuNTdj&utm_source=qr" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-300">Sultan</a>
-          <div className="mt-2">
-            <button onClick={() => setShowContactForm(!showContactForm)} className="text-blue-500 underline hover:text-blue-700 text-sm">
-              {showContactForm ? "Hide Contact Form" : "Contact / Collaborate"}
-            </button>
-          </div>
-        </footer>
+  <p>
+    Built with 🤍 by <a href="https://www.instagram.com/_imsultan?igsh=Y2hnYzJ5N2VuNTdj&utm_source=qr" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-300">Sultan</a>
+  </p>
+  <div className="mt-2">
+    <button onClick={() => setShowContactForm(!showContactForm)} className="text-blue-500 underline hover:text-blue-700 text-sm">
+      {showContactForm ? "Hide Contact Form" : "Contact / Collaborate"}
+    </button>
+  </div>
+</footer>
 
         {showContactForm && (
-          <div className="mt-6 max-w-xl mx-auto p-4 bg-white dark:bg-gray-800 rounded shadow">
+          <div className={`mt-6 max-w-xl mx-auto p-4 rounded shadow transition-colors duration-300 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-black'}`}>
             <h3 className="text-lg font-semibold text-center mb-2">Reach Out / Collaborate</h3>
             <form onSubmit={handleSubmit} className="space-y-3">
-              <input name="name" placeholder="Your Name" className="w-full p-2 border rounded bg-transparent" required />
-              <input name="email" placeholder="Your Email" className="w-full p-2 border rounded bg-transparent" required />
-              <input name="countryCode" placeholder="Country Code (e.g. +91)" className="w-full p-2 border rounded bg-transparent" required />
-              <input name="phone" placeholder="Contact Number" className="w-full p-2 border rounded bg-transparent" required />
-              <input name="location" placeholder="City, Country" className="w-full p-2 border rounded bg-transparent" required />
-              <textarea name="message" rows={3} placeholder="Your Message" className="w-full p-2 border rounded bg-transparent" required></textarea>
+              <input name="name" placeholder="Your Name" className={inputClass} type="text" autoComplete="off" required />
+              <input name="email" placeholder="Your Email" className={inputClass} type="email" autoComplete="off" required />
+              <input name="countryCode" placeholder="Country Code (e.g. +91)" className={inputClass} required />
+              <input name="phone" placeholder="Contact Number" className={inputClass} type="tel" required />
+              <input name="location" placeholder="City, Country" className={inputClass} required />
+              <textarea name="message" rows={3} placeholder="Your Message" className={inputClass} required></textarea>
               <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Submit</button>
             </form>
           </div>
