@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
 export default function App() {
   const [direction, setDirection] = useState("long");
