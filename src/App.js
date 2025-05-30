@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
 export default function App() {
   const [direction, setDirection] = useState("long");
@@ -63,12 +64,12 @@ export default function App() {
 
   const results = [
     
-    { label: "Margin Required", value: `$${margin.toFixed(2)} USDT / ₹${(margin * conversionRate).toFixed(0)} INR`, color: "text-purple-500" },
+    { label: "Margin Required", value: `$${margin.toFixed(2)} USDT / ₹${(margin * conversionRate).toLocaleString()} INR`, color: "text-purple-500" },
     { label: `💱 Using INR/USDT Rate`, value: `₹${conversionRate} per USDT`, color: "text-gray-500" },
-    { label: "Potential Loss (SL + Fees)", value: `$${(fee + (slAmount / conversionRate)).toFixed(2)} USDT / ₹${(fee * conversionRate + Number(slAmount)).toFixed(0)} INR`, color: "text-orange-500" },
-    { label: "Potential Loss (Maker+Maker)", value: `$${(slAmount / conversionRate + notional * 0.0002 * 2).toFixed(2)} USDT / ₹${((slAmount / conversionRate + notional * 0.0002 * 2) * conversionRate).toFixed(0)} INR`, color: "text-yellow-600" },
-    { label: "Potential Loss (Taker+Maker)", value: `$${(slAmount / conversionRate + notional * (0.0004 + 0.0002)).toFixed(2)} USDT / ₹${((slAmount / conversionRate + notional * (0.0004 + 0.0002)) * conversionRate).toFixed(0)} INR`, color: "text-yellow-600" },
-    { label: "Potential Loss (Taker+Taker)", value: `$${(slAmount / conversionRate + notional * 0.0004 * 2).toFixed(2)} USDT / ₹${((slAmount / conversionRate + notional * 0.0004 * 2) * conversionRate).toFixed(0)} INR`, color: "text-yellow-600" },
+    { label: "Potential Loss (SL + Fees)", value: `$${(fee + (slAmount / conversionRate)).toFixed(2)} USDT / ₹${(fee * conversionRate + Number(slAmount)).toLocaleString()} INR`, color: "text-orange-500" },
+    { label: "Potential Loss (Maker+Maker)", value: `$${(slAmount / conversionRate + notional * 0.0002 * 2).toFixed(2)} USDT / ₹${((slAmount / conversionRate + notional * 0.0002 * 2) * conversionRate).toLocaleString()} INR`, color: "text-yellow-600" },
+    { label: "Potential Loss (Taker+Maker)", value: `$${(slAmount / conversionRate + notional * (0.0004 + 0.0002)).toFixed(2)} USDT / ₹${((slAmount / conversionRate + notional * (0.0004 + 0.0002)) * conversionRate).toLocaleString()} INR`, color: "text-yellow-600" },
+    { label: "Potential Loss (Taker+Taker)", value: `$${(slAmount / conversionRate + notional * 0.0004 * 2).toFixed(2)} USDT / ₹${((slAmount / conversionRate + notional * 0.0004 * 2) * conversionRate).toLocaleString()} INR`, color: "text-yellow-600" },
     { label: "Quantity", value: `${qty.toFixed(4)} BTC` },
     { label: "Notional", value: `$${notional.toFixed(2)} USDT` },
     
@@ -164,7 +165,7 @@ export default function App() {
     <span className="block text-sm font-medium">SL Amount (₹)
       <span className="ml-1 text-gray-400 cursor-help" title="Your total loss in INR if SL hits.">❔</span>
     </span>
-    <input className={inputClass} type="number" placeholder="Enter SL amount (₹)" value={slAmount} onChange={(e) => setSlAmount(e.target.value !== "" ? Number(e.target.value) : "")} />
+    <input className={inputClass} type="text" placeholder="Enter SL amount (₹)" value={slAmount.toLocaleString("en-IN")} onChange={(e) => { const raw = e.target.value.replace(/,/g, ""); setSlAmount(raw === "" ? "" : Number(raw)); }} />
   </label>
 
   <label className="block">
@@ -202,10 +203,12 @@ export default function App() {
               <ul className="list-disc list-inside">
   {targets.map((t) => (
     <li key={t.r}>
-      {t.r}:1 → {t.price.toFixed(2)} USDT ({t.percent.toFixed(2)}%) — Profit: ${t.profitUSDT.toFixed(2)} / ₹{t.profitINR.toFixed(0)}
-    </li>
+  {t.r}:1 → {t.price.toFixed(2)} USDT ({t.percent.toFixed(2)}%) — Profit: ${t.profitUSDT.toFixed(2)} / ₹{t.profitINR.toLocaleString()}
+</li>
   ))}
 </ul>
+
+
             </div>
           </div>
         )}
