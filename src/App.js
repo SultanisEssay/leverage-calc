@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 
 export default function App() {
   const [direction, setDirection] = useState("long");
-  const [entryPrice, setEntryPrice] = useState(29000);
-  const [slPercent, setSlPercent] = useState(2);
-  const [slAmount, setSlAmount] = useState(1000);
-  const [leverage, setLeverage] = useState(50);
+  const [entryPrice, setEntryPrice] = useState("");
+  const [slPercent, setSlPercent] = useState("");
+  const [slAmount, setSlAmount] = useState("");
+  const [leverage, setLeverage] = useState("");
   const [calculated, setCalculated] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [toast, setToast] = useState("");
@@ -132,22 +132,23 @@ export default function App() {
 
           <label className="block">
             <span className="block text-sm font-medium">Entry Price (USDT)</span>
-            <input className={inputClass} type="number" value={entryPrice} onChange={(e) => setEntryPrice(Number(e.target.value))} />
+            <input className={inputClass} type="number" placeholder="Enter price" value={entryPrice} onChange={(e) => setEntryPrice(Number(e.target.value))} />
           </label>
 
           <label className="block">
             <span className="block text-sm font-medium">Stop Loss %</span>
-            <input className={inputClass} type="number" value={slPercent} onChange={(e) => setSlPercent(Number(e.target.value))} />
+            <input className={inputClass} type="number" placeholder="Enter stop loss %" value={slPercent} onChange={(e) => setSlPercent(Number(e.target.value))} />
           </label>
 
           <label className="block">
             <span className="block text-sm font-medium">SL Amount (₹)</span>
-            <input className={inputClass} type="number" value={slAmount} onChange={(e) => setSlAmount(Number(e.target.value))} />
+            <input className={inputClass} type="number" placeholder="Enter SL amount (₹)" value={slAmount} onChange={(e) => setSlAmount(Number(e.target.value))} />
           </label>
 
           <label className="block">
             <span className="block text-sm font-medium">Leverage</span>
             <select className={inputClass} value={leverage} onChange={(e) => setLeverage(Number(e.target.value))}>
+  <option value="" disabled hidden>Select Leverage</option>
               {[...Array(21)].map((_, i) => i * 50).filter((v) => v > 0).map((val) => (
                 <option key={val} value={val}>{val}x</option>
               ))}
