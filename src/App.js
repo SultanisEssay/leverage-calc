@@ -95,23 +95,25 @@ export default function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
-    fetch(
-      "https://docs.google.com/forms/d/e/1FAIpQLSdPoqhngYi6z8AUF9k_8QAEc2HIlyihWViA-1-5MxvLf6yYpg/formResponse",
-      {
-        method: "POST",
-        mode: "no-cors",
-        body: new URLSearchParams({
-          "entry.1065878465": form.get("name"),
-          "entry.949387187": form.get("email"),
-          "entry.2029084220": form.get("countryCode"),
-          "entry.992718981": form.get("phone"),
-          "entry.546523940": form.get("location"),
-          "entry.181614183": form.get("message"),
-        }),
-      }
-    ).then(() => setToast("Your message has been recorded!"));
-  };
-
+    
+    fetch("https://script.google.com/macros/s/AKfycbzVi30fB1_2J5k3sqtTO9CmFRzjvQBbLhJ78_5S9zsunhEWE45i6Ls9Q880uxFvnNUg/exec", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    name: form.get("name"),
+    email: form.get("email"),
+    countryCode: form.get("countryCode"),
+    phone: form.get("phone"),
+    location: form.get("location"),
+    message: form.get("message")
+  })
+}).then(() => {
+  setToast("Your message has been recorded!");
+  e.target.reset(); // Optional: clear the form
+});
+    
   const inputClass = `w-full p-2 border rounded ${darkMode ? "bg-transparent text-white" : "bg-white text-black"}`;
 
   return (
