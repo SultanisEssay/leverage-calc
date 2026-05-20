@@ -111,6 +111,19 @@ export default function App() {
             Stop Loss %
             <input type="number" value={slPercent} onChange={(e) => setSlPercent(e.target.value !== "" ? Number(e.target.value) : "")} placeholder="e.g. 2" className={inputClass} />
           </label>
+        <label>
+  SL Amount (INR)
+  <input
+    type="text"
+    value={slAmount.toLocaleString("en-IN")}
+    onChange={(e) => {
+      const raw = e.target.value.replace(/,/g, "");
+      setSlAmount(raw === "" ? "" : Number(raw));
+    }}
+    placeholder="e.g. 1000"
+    className={inputClass}
+  />
+</label>
          <label>
   Leverage
   <select
