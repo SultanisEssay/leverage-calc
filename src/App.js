@@ -29,7 +29,7 @@ export default function App() {
   }, [toast]);
 
   const isValid = [entryPrice, slPercent, slAmount, leverage].every(val => val !== "" && !isNaN(val) && Number(val) > 0);
-  const conversionRate = 85;
+  const conversionRate = 96.6;
 
   const qty = isValid ? slAmount / (entryPrice * conversionRate * (slPercent / 100)) : 0;
   const notional = isValid ? qty * entryPrice : 0;
@@ -111,19 +111,22 @@ export default function App() {
             Stop Loss %
             <input type="number" value={slPercent} onChange={(e) => setSlPercent(e.target.value !== "" ? Number(e.target.value) : "")} placeholder="e.g. 2" className={inputClass} />
           </label>
-          <label>
-            SL Amount (INR)
-            <input type="text" value={slAmount.toLocaleString("en-IN")} onChange={(e) => { const raw = e.target.value.replace(/,/g, ""); setSlAmount(raw === "" ? "" : Number(raw)); }} placeholder="e.g. 1000" className={inputClass} />
-          </label>
-          <label>
-            Leverage
-            <select value={leverage} onChange={(e) => setLeverage(Number(e.target.value))} className={inputClass}>
-              <option value="" disabled hidden>Select Leverage</option>
-              {[...Array(21)].map((_, i) => i * 50).filter(v => v > 0).map((val) => (
-                <option key={val} value={val}>{val}x</option>
-              ))}
-            </select>
-          </label>
+         <label>
+  Leverage
+  <select
+    value={leverage}
+    onChange={(e) => setLeverage(Number(e.target.value))}
+    className={inputClass}
+  >
+    <option value="" disabled hidden>Select Leverage</option>
+
+    {[1, 10, 25, 50, 100, 150, 200].map((val) => (
+      <option key={val} value={val}>
+        {val}x
+      </option>
+    ))}
+  </select>
+</label>
           <label>
             Risk-Reward Ratio
             <select value={selectedRR} onChange={(e) => setSelectedRR(Number(e.target.value))} className={inputClass}>
