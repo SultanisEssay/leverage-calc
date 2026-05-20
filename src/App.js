@@ -43,12 +43,13 @@ export default function App() {
       : entryPrice + (entryPrice * slPercent) / 100
   ) : 0;
 
-  const liqDrop = isValid ? 50 / leverage : 0;
-  const liquidation = isValid ? (
-    direction === "long"
-      ? entryPrice - (entryPrice * liqDrop) / 100
-      : entryPrice + (entryPrice * liqDrop) / 100
-  ) : 0;
+const maintenanceMarginRate = 0.5; // 0.5%
+
+const liquidation = isValid ? (
+  direction === "long"
+    ? entryPrice * (1 - (1 / leverage) + (maintenanceMarginRate / 100))
+    : entryPrice * (1 + (1 / leverage) - (maintenanceMarginRate / 100))
+) : 0;
 
   const slSafe = isValid ? (direction === "long" ? slPrice > liquidation : slPrice < liquidation) : false;
 
