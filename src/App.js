@@ -113,7 +113,7 @@ const netLossINR = isValid
     { label: "Break-even Move", value: `${breakEvenPercent.toFixed(2)}%`, color: "text-blue-500" },
     { label: `📈 Net Profit at 1:${selectedRR} R:R (after fees)`, value: `$${rrNetProfit.toFixed(2)} / ₹${(rrNetProfit * conversionRate).toLocaleString("en-IN")}`, color: rrNetProfit >= 0 ? "text-green-500" : "text-red-500" },
     { label: `🎯 Target Price at 1:${selectedRR}`, value: `${rrTargetPrice.toFixed(2)} USDT (${rrPercent.toFixed(2)}%)`, color: "text-blue-500" },
-    { label: `📉 Net Loss (after fees)`, value: `$${netLossUSDT.toFixed(2)} / ₹${netLossINR.toLocaleString("en-IN")}`, color: "text-orange-500" },
+    { label: `📉 Net Loss (after fees)`, value: `$${netLossUSDT.toFixed(2)} / ₹${netLossINR.toLocaleString("en-IN")}`, color: "text-red-500" },
   ] : [];
 
   return (
