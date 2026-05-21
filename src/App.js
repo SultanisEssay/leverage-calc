@@ -29,13 +29,28 @@ export default function App() {
   }, [toast]);
 
   const isValid = [entryPrice, slPercent, slAmount, leverage].every(val => val !== "" && !isNaN(val) && Number(val) > 0);
-  const conversionRate = 96.6;
+  const conversionRate = 96.08;
 
   const qty = isValid ? slAmount / (entryPrice * conversionRate * (slPercent / 100)) : 0;
   const notional = isValid ? qty * entryPrice : 0;
   const margin = isValid ? notional / leverage : 0;
-  const fee = isValid ? notional * 0.0008 * 2 : 0;
-  const breakEvenPercent = isValid ? (fee / notional) * 100 : 0;
+
+// ===== FEES =====
+const tradingFeeRate = 0.0005; // 0.05% Taker Fee
+const gstRate = 0.18; // 18% GST
+
+const baseOneSideFee = isValid
+  ? notional * tradingFeeRate
+  : 0;
+
+const oneSideFee = baseOneSideFee * (1 + gstRate);
+
+const roundTripFee = oneSideFee * 2;
+
+// ===== BREAK EVEN =====
+const breakEvenPercent = isValid
+  ? (roundTripFee / notional) * 100
+  : 0;
 
   const slPrice = isValid ? (
     direction === "long"
@@ -61,9 +76,15 @@ const liquidation = isValid ? (
   ) : 0;
 
   const rrGrossProfit = isValid ? (rrTargetPrice - entryPrice) * qty * (direction === "long" ? 1 : -1) : 0;
-  const rrNetProfit = rrGrossProfit - fee;
-  const netLossUSDT = isValid ? slAmount / conversionRate + fee : 0;
-  const netLossINR = isValid ? slAmount + fee * conversionRate : 0;
+ const rrNetProfit = rrGrossProfit - roundTripFee;
+
+const netLossUSDT = isValid
+  ? slAmount / conversionRate + roundTripFee
+  : 0;
+
+const netLossINR = isValid
+  ? slAmount + roundTripFee * conversionRate
+  : 0;
 
   const inputClass = `w-full p-2 border rounded ${darkMode ? 'bg-gray-800 text-white border-gray-600' : 'bg-white text-black border-gray-300'}`;
 
@@ -72,6 +93,17 @@ const liquidation = isValid ? (
     { label: `💱 Using INR/USDT Rate`, value: `₹${conversionRate} per USDT`, color: "text-gray-500" },
     { label: "Quantity", value: `${qty.toFixed(4)} BTC` },
     { label: "Notional", value: `$${notional.toFixed(2)} USDT` },
+    {
+  label: "Fee (One Side incl. GST)",
+  value: `$${oneSideFee.toFixed(2)} / ₹${(oneSideFee * conversionRate).toLocaleString("en-IN")}`,
+  color: "text-yellow-500"
+},
+
+{
+  label: "Fee (Round Trip incl. GST)",
+  value: `$${roundTripFee.toFixed(2)} / ₹${(roundTripFee * conversionRate).toLocaleString("en-IN")}`,
+  color: "text-orange-500"
+},
     { label: "SL Price", value: `${slPrice.toFixed(2)} USDT` },
     {
       label: "Liquidation Price",
