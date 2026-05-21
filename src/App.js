@@ -75,8 +75,32 @@ const liquidation = isValid ? (
       : entryPrice - (entryPrice * rrPercent) / 100
   ) : 0;
 
-  const rrGrossProfit = isValid ? (rrTargetPrice - entryPrice) * qty * (direction === "long" ? 1 : -1) : 0;
- const rrNetProfit = rrGrossProfit - roundTripFee;
+ const rrGrossProfit = isValid
+  ? (rrTargetPrice - entryPrice) *
+    qty *
+    (direction === "long" ? 1 : -1)
+  : 0;
+
+// ===== DYNAMIC EXIT FEES =====
+
+const entryFee = oneSideFee;
+
+const targetNotional = isValid
+  ? qty * rrTargetPrice
+  : 0;
+
+const targetExitBaseFee = targetNotional * tradingFeeRate;
+
+const targetExitFee =
+  targetExitBaseFee * (1 + gstRate);
+
+const totalProfitFees =
+  entryFee + targetExitFee;
+
+// ===== FINAL NET PROFIT =====
+
+const rrNetProfit =
+  rrGrossProfit - totalProfitFees;
 
 const netLossUSDT = isValid
   ? slAmount / conversionRate + roundTripFee
@@ -101,6 +125,11 @@ const netLossINR = isValid
 
 {
   label: "Fee (Round Trip incl. GST)",
+  {
+  label: "Projected Exit Fee at Target",
+  value: `$${targetExitFee.toFixed(2)} / ₹${(targetExitFee * conversionRate).toLocaleString("en-IN")}`,
+  color: "text-pink-500"
+},
   value: `$${roundTripFee.toFixed(2)} / ₹${(roundTripFee * conversionRate).toLocaleString("en-IN")}`,
   color: "text-orange-500"
 },
