@@ -124,15 +124,9 @@ const netLossINR = isValid
 },
 
 {
-  label: "Fee (Round Trip incl. GST)",
-  value: `$${roundTripFee.toFixed(2)} / ₹${(roundTripFee * conversionRate).toLocaleString("en-IN")}`,
+  label: `Fee at 1:${selectedRR} RR (incl. GST)`,
+  value: `$${totalProfitFees.toFixed(2)} / ₹${(totalProfitFees * conversionRate).toLocaleString("en-IN")}`,
   color: "text-orange-500"
-},
-
-{
-  label: "Projected Exit Fee at Target",
-  value: `$${targetExitFee.toFixed(2)} / ₹${(targetExitFee * conversionRate).toLocaleString("en-IN")}`,
-  color: "text-pink-500"
 },
     { label: "SL Price", value: `${slPrice.toFixed(2)} USDT` },
     {
